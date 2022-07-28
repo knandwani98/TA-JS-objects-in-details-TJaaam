@@ -22,6 +22,7 @@ For each different ways of creating object write different solutions.
 
 ### To test use the following data
 
+
 ```js
 const testData = {
   title: 'Where is the capital of Jordan',
