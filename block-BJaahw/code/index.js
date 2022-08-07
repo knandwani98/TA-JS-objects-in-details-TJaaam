@@ -17,3 +17,22 @@
 // 9. Check by creating two instance of the class using data of two different persons and re-assign the value of `personOne` and `personTwo`
 
 // 10. Try calling `personOne.sayHello()` and `personTwo.sayHello()`. Check if you get the required output.
+
+
+class CreateUser {
+    constructor (name, age) {
+    this.name = name;
+    this.age = age;
+    }
+    sayHello() {
+        alert(`Welcome ${this.name}`)
+    }
+}
+
+let personOne = new CreateUser("Vikk", 27);
+let personTwo = new CreateUser("Harry", 26);
+
+console.log(personOne);
+console.log(personOne.sayHello());
+console.log(personTwo);
+console.log(personTwo.sayHello());
