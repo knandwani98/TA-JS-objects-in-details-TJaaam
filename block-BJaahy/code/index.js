@@ -17,7 +17,7 @@ class Square {
     }
 
     set area (value) {
-        let newSide = (Math.sqrt(value));
+        let newSide = Math.sqrt(value);
         this.width = newSide;
         this.height = newSide;
     }
