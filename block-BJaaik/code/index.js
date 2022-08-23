@@ -4,9 +4,15 @@ class Person {
     this.age = age;
     this.gender = gender;
   }
-  eat() {}
-  sleep() {}
-  walk() {}
+  eat() {
+    return this.name + " eats";
+  }
+  sleep() {
+    return this.name + " sleeps";
+  }
+  walk() {
+    return this.name + " walks";
+  }
 }
 
 class Player extends Person {
@@ -42,3 +48,8 @@ let sachin = new Cricketer("Sachin", 16, "Male", "Cricket", "India");
 let messi = new Player("Messi", 20, "Male", "Football");
 let ankit = new Teacher("Ankit", 25, "Male", "AltCampus");
 let drake = new Artist("Drake", 25, "Male", "Rapper");
+
+console.log(sachin);
+console.log(messi);
+console.log(ankit);
+console.log(drake);
