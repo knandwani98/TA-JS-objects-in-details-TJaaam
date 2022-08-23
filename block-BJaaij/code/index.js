@@ -16,17 +16,16 @@
 // - `markBookAsRead` when called will change the `isRead` property on the book to be `true`. It will also change the `finishedDate` to be the `Date.now()` when this function is called.
 
 class Book {
-  constructor(title, category, author, isRead = false, finishedDate) {
-    this.title = this.title;
-    this.category = this.category;
-    this.author = this.author;
-    this.isRead = this.isRead;
-    this.finishedDate = this.finishedDate;
+  constructor(title, category, author) {
+    this.title = title;
+    this.category = category;
+    this.author = author;
+    this.isRead = false;
+    this.finishedDate = null;
   }
   markBookAsRead() {
     this.isRead = true;
     this.finishedDate = Date.now();
-    return;
   }
 }
 
@@ -38,12 +37,28 @@ class Book {
 class BookList {
   constructor() {
     this.allBooks = [];
-    this.index = index;
+    this.currentBookIndex = 0;
   }
-  add(...book) {
-    this.allBooks.push(book);
+  add(books = []) {
+    this.allBooks = this.allBooks.concat(books);
+    return this.allBooks;
   }
-  getCurrentBook() {}
+
+  getCurrentBook() {
+    return this.allBooks[this.currentBookIndex];
+  }
+  getNextBook() {
+    this.currentBookIndex = this.currentBookIndex + 1;
+    return this.allBooks[this.currentBookIndex];
+  }
+  getPreviousBook() {
+    this.currentBookIndex = this.currentBookIndex - 1;
+    return this.allBooks[this.currentBookIndex];
+  }
+  changeCurrentBook(index) {
+    this.currentBookIndex = index;
+    return this.allBooks[this.currentBookIndex];
+  }
 }
 
 // #### BookList Methods
@@ -55,3 +70,16 @@ class BookList {
 // - [] `changeCurrentBook` should accept one parameter and update the current index.
 
 // After creating the Book and BookList class create 5 book object and add it to list. Test all the methods in Book and BookList class.
+
+let book1 = new Book(
+  "A Better India: A Better World",
+  "Narayana Murthy",
+  "India"
+);
+
+let book2 = new Book("A Passage to India", "E.M. Foster", "India");
+let book3 = new Book("A Revenue Stamp", "Amrita Pritam", "India");
+
+let library = new BookList();
+library.add([book1, book2, book3]);
+library.getCurrentBook();
