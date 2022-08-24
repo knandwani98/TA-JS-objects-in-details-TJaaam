@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/0893569ec1.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h1>My Book List</h1>
+    <section class="form container">
+      <form action="">
+        <label for="title">Title</label>
+        <input class="form-box" type="text" id="title" />
+        <label for="author">Author</label>
+        <input class="form-box" type="text" id="author" />
+        <label for="isbn">ISBN#</label>
+        <input class="form-box" type="text" id="isbn" />
+        <input type="submit" class="form-box submit" value="Add Book">
+      </form>
+    </section>
+
+    <section class="book-list container">
+      <table>
+        <thead>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN#</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Silver Lining Playbook</td>
+            <td>Sam Mendis</td>
+            <td>212236532577</td>
+            <td>
+              <span><i class="fas fa-trash-alt"></i></i></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <script src="index.js"></script>
+  </body>
+</html>
