@@ -20,6 +20,7 @@ class Player extends Person {
     super(name, age, gender);
     this.sportsName = sportsName;
   }
+
   play() {}
 }
 class Cricketer extends Player {
