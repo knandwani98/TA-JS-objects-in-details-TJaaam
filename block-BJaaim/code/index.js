@@ -1,147 +1,130 @@
-// We will be creating a quiz app in this section step-by-step. Follow the steps below and complete on by one
+function init() {
+  let quesRoot = document.querySelector(".ques-root");
+  let footer = document.querySelector("footer");
 
-// 1. Quiz is a collection of Questions.
-// 2. Question will need `Title`, `Options` and `Correct Answer`
+  let prevBtn = document.createElement("button");
+  let nextBtn = document.createElement("button");
+  let scoreBtn = document.createElement("button");
 
-let quesRoot = document.querySelector(".ques-root");
+  class Question {
+    constructor(title, options, correctIndex) {
+      this.title = title;
+      this.options = options;
+      this.correctIndex = correctIndex;
+    }
 
-// ### Make a Question class with these data and methods:
+    isCorrect(ans) {
+      return ans === this.options[this.correctIndex];
+    }
 
-// DATA:
-
-class Question {
-  constructor(title, options, correctIndex) {
-    this.title = title;
-    this.options = options;
-    this.correctIndex = correctIndex;
+    get correctAnswer() {
+      return this.options[this.correctIndex];
+    }
   }
 
-  isCorrect(ans) {
-    return ans === this.correctIndex;
-  }
-  get correctAnswer() {
-    return this[this.correctIndex];
+  class Quiz {
+    constructor(allQues = [], score = 0) {
+      this.allQues = allQues;
+      this.score = score;
+      this.activeIndex = 0;
+    }
+
+    addQues(title, options, correctIndex) {
+      let ques = new Question(title, options, correctIndex);
+      this.allQues.push(ques);
+    }
+
+    nextQuestion() {
+      this.activeIndex = this.activeIndex + 1;
+      this.createUI();
+    }
+
+    prevQuestion() {
+      this.activeIndex = this.activeIndex - 1;
+      this.createUI();
+    }
+
+    updateScore() {
+      this.score++;
+    }
+
+    handlBtn() {
+      if (this.activeIndex === this.allQues.length - 1) {
+        nextBtn.classList.add("none");
+        scoreBtn.classList.remove("none");
+      } else if (this.activeIndex === 0) {
+        prevBtn.classList.add("none");
+        scoreBtn.classList.add("none");
+        nextBtn.classList.remove("none");
+      } else {
+        nextBtn.classList.remove("none");
+        prevBtn.classList.remove("none");
+        scoreBtn.classList.add("none");
+      }
+    }
+
+    createUI() {
+      quesRoot.innerHTML = "";
+      let activeQues = this.allQues[this.activeIndex];
+      let form = document.createElement("form");
+      // let h2 = document.createElement("h2");
+      // h2.innerText = `Total Scores - ${this.score}`;
+      let h2 = document.createElement("h2");
+      h2.innerText = `Q. ${activeQues.title}`;
+
+      let submit = document.createElement("input");
+      submit.type = "submit";
+      submit.classList.add("submit");
+
+      activeQues.options.forEach((option, index) => {
+        let div = document.createElement("div");
+        let input = document.createElement("input");
+        input.type = "radio";
+        input.id = `option-${index}`;
+        input.name = "options";
+        input.value = option;
+        let label = document.createElement("label");
+        label.setAttribute("for", `option-${index}`);
+        label.innerText = option;
+        div.append(input, label);
+        form.append(div, submit);
+
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (input.checked) {
+            if (activeQues.isCorrect(input.value)) {
+              this.updateScore();
+            }
+          }
+        });
+      });
+
+      prevBtn.innerText = "Prev Q.";
+      prevBtn.classList.add("prev-btn", "btn");
+      nextBtn.innerText = "Next Q.";
+      nextBtn.classList.add("next-btn", "btn");
+      scoreBtn.innerText = "Total Score";
+      scoreBtn.classList.add("score-btn", "btn");
+      footer.append(prevBtn, nextBtn, scoreBtn);
+
+      this.handlBtn();
+
+      quesRoot.append(h2, form);
+    }
   }
 
-  createUI() {
-    let h2 = document.createElement("h2");
-    h2.innerText = `Q. ${this.title}`;
-    let form = document.createElement("form");
-    let div1 = document.createElement("div");
-    let div2 = document.createElement("div");
-    let div3 = document.createElement("div");
-    let div4 = document.createElement("div");
-    let input1 = document.createElement("input");
-    let input2 = document.createElement("input");
-    let input3 = document.createElement("input");
-    let input4 = document.createElement("input");
-    input1.type = "radio";
-    input2.type = "radio";
-    input3.type = "radio";
-    input4.type = "radio";
-    input1.id = this.options[0];
-    input2.id = this.options[1];
-    input3.id = this.options[2];
-    input4.id = this.options[3];
-    input1.name = "options";
-    input2.name = "options";
-    input3.name = "options";
-    input4.name = "options";
-    let label1 = document.createElement("label");
-    let label2 = document.createElement("label");
-    let label3 = document.createElement("label");
-    let label4 = document.createElement("label");
-    label1.setAttribute("for", this.options[0]);
-    label2.setAttribute("for", this.options[1]);
-    label3.setAttribute("for", this.options[2]);
-    label4.setAttribute("for", this.options[3]);
-    label1.innerText = this.options[0];
-    label2.innerText = this.options[1];
-    label3.innerText = this.options[2];
-    label4.innerText = this.options[3];
-    div1.append(input1, label1);
-    div2.append(input2, label2);
-    div3.append(input3, label3);
-    div4.append(input4, label4);
+  let quiz = new Quiz();
+  allQues.forEach((ques) => {
+    quiz.addQues(ques.title, ques.options, ques.correctIndex);
+  });
 
-    let input5 = document.createElement("input");
-    input5.type = "submit";
-    input5.value = "Check";
-    input5.classList.add("submit");
+  scoreBtn.addEventListener("click", () => {
+    alert(quiz.score);
+  });
+  nextBtn.addEventListener("click", quiz.nextQuestion.bind(quiz));
+  prevBtn.addEventListener("click", quiz.prevQuestion.bind(quiz));
 
-    form.append(div1, div2, div3, div4, input5);
-    quesRoot.append(h2, form);
-  }
+  quiz.createUI();
 }
 
-let question1 = new Question(
-  "Inside which HTML element do we put JavaScript?",
-  ["script", "scripting", "js", "link"],
-  0
-);
-// - Title of the question
-// - Options of the question
-// - Correct answer
-
-// METHODS:
-
-// - isCorrect(answer)
-
-// Check if the given answer is correct or not. It will accept one answer and return `true` is the answer is correct otherwise false.
-
-// - getCorrectAnswer()
-//   This method will return the correct answer of the question.
-
-// - createUI (this will create the layout of a single question)
-
-// This method will decide how the UI of a question look like. Calling this function should add the UI in the DOM.
-
-// ### Make quiz class with these data and properties
-
-class Quiz {
-  constructor(
-    allQues = [],
-    collection = [],
-    activeIndex,
-    activeVisibleQIndex,
-    score,
-    totalCorrect
-  ) {
-    this.allQues = allQues;
-    this.collection = collection;
-    this.activeIndex = activeIndex;
-    this.activeVisibleQIndex = activeVisibleQIndex;
-    this.score = score;
-    this.totalCorrect = totalCorrect;
-  }
-  nextQuestion() {
-    return this[this.activeVisibleQIndex + 1];
-  }
-  updateScore() {
-    return this.score++;
-  }
-
-  createUI() {
-    this.collection.forEach((question) => {
-      let;
-    });
-  }
-}
-
-// DATA:
-
-// - allQuestions
-//   Collection of Questions. An array with multiple question.
-// - activeIndex
-//   Index of the active visible question
-// - score
-//   Total number of correct answer
-
-// METHOD:
-
-// - nextQuestion()
-//   This method should get the next question.
-// - createUI
-//   This will create the ui of the whole app.
-// - updateScore
-//   This method will update the score.
+init();
